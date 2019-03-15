@@ -18,11 +18,6 @@ module Payday::Invoiceable
     "Goofy McGoofison\nYour Invoice Doesn't\nHave It's Own BillTo Method"
   end
 
-  # Calculates the subtotal of this invoice by adding up all of the line items
-  def subtotal
-    line_items.reduce(BigDecimal.new("0")) { |result, item| result += item.amount }
-  end
-
   # The tax for this invoice, as a BigDecimal
   def tax
     if defined?(tax_rate)
@@ -42,11 +37,6 @@ module Payday::Invoiceable
     else
       0
     end
-  end
-
-  # Calculates the total for this invoice.
-  def total
-    subtotal + tax + shipping
   end
 
   def overdue?

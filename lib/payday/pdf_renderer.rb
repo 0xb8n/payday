@@ -194,7 +194,7 @@ module Payday
       invoice.line_items.each do |line|
         table_data << [line.description,
                        (line.display_price || number_to_currency(line.price, invoice)),
-                       (line.display_quantity || BigDecimal.new(line.quantity.to_s).to_s("F")),
+                       (line.display_quantity || BigDecimal.new(line.quantity.to_s).to_i),
                        number_to_currency(line.amount, invoice)]
       end
 
@@ -218,41 +218,31 @@ module Payday
     def self.totals_lines(invoice, pdf)
       table_data = []
       table_data << [
-        bold_cell(pdf, I18n.t("payday.invoice.subtotal", default: "Subtotal:")),
+        bold_cell(pdf, 'Subtotal:'),
         cell(pdf, number_to_currency(invoice.subtotal, invoice), align: :right)
       ]
 
-      if invoice.tax_rate > 0
-        if invoice.tax_description.nil?
-          tax_description = I18n.t("payday.invoice.tax", default: "Tax:")
-        else
-          tax_description = invoice.tax_description
-        end
-
+      if invoice.shipping_rate > 0
         table_data << [
-          bold_cell(pdf, tax_description),
-          cell(pdf, number_to_currency(invoice.tax, invoice), align: :right)
+          bold_cell(pdf, 'Shipping:'),
+          cell(pdf, number_to_currency(invoice.shipping_rate, invoice), align: :right)
         ]
       end
-      if invoice.shipping_rate > 0
-        if invoice.shipping_description.nil?
-          shipping_description =
-            I18n.t("payday.invoice.shipping", default: "Shipping:")
-        else
-          shipping_description = invoice.shipping_description
-        end
-
+      if invoice.tax_rate > 0
         table_data << [
-          bold_cell(pdf, shipping_description),
-          cell(pdf, number_to_currency(invoice.shipping, invoice),
-               align: :right)
+          bold_cell(pdf, 'Taxes:'),
+          cell(pdf, number_to_currency(invoice.tax_rate, invoice), align: :right)
+        ]
+      end
+      if invoice.discount_rate != 0
+        table_data << [
+          bold_cell(pdf, 'Discount:'),
+          cell(pdf, number_to_currency(invoice.discount_rate, invoice), align: :right)
         ]
       end
       table_data << [
-        bold_cell(pdf, I18n.t("payday.invoice.total", default: "Total:"),
-                  size: 12),
-        cell(pdf, number_to_currency(invoice.total, invoice),
-             size: 12, align: :right)
+        bold_cell(pdf, 'Grand Total:'),
+        cell(pdf, number_to_currency(invoice.grandtotal, invoice), align: :right)
       ]
       table = pdf.make_table(table_data, cell_style: { borders: [] })
       pdf.bounding_box([pdf.bounds.width - table.width, pdf.cursor],

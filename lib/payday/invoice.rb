@@ -4,7 +4,8 @@ module Payday
     include Payday::Invoiceable
 
     attr_accessor :invoice_number, :bill_to, :ship_to, :notes, :line_items, :shipping_rate, :shipping_description,
-      :tax_rate, :tax_description, :due_at, :paid_at, :refunded_at, :currency, :invoice_details, :invoice_date
+      :tax_rate, :tax_description, :due_at, :paid_at, :refunded_at, :currency, :invoice_details, :invoice_date,
+      :subtotal, :grandtotal, :discount_rate
 
     def initialize(options =  {})
       self.invoice_number = options[:invoice_number] || nil
@@ -22,6 +23,10 @@ module Payday
       self.currency = options[:currency] || nil
       self.invoice_details = options[:invoice_details] || []
       self.invoice_date = options[:invoice_date] || nil
+
+      self.discount_rate = options[:discount_rate] || nil
+      self.grandtotal = options[:grandtotal] || nil
+      self.subtotal = options[:subtotal] || nil
     end
 
     # The tax rate that we're applying, as a BigDecimal
@@ -32,6 +37,18 @@ module Payday
     # Shipping rate
     def shipping_rate=(value)
       @shipping_rate = BigDecimal.new(value.nil? ? 0 : value.to_s)
+    end
+
+    def discount_rate=(value)
+      @discount_rate = BigDecimal.new(value.nil? ? 0 : value.to_s)
+    end
+
+    def subtotal=(value)
+      @subtotal = BigDecimal.new(value.nil? ? 0 : value.to_s)
+    end
+
+    def grandtotal=(value)
+      @grandtotal = BigDecimal.new(value.nil? ? 0 : value.to_s)
     end
   end
 end
