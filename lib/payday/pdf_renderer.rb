@@ -244,6 +244,18 @@ module Payday
         bold_cell(pdf, 'Grand Total:'),
         cell(pdf, number_to_currency(invoice.grandtotal, invoice), align: :right)
       ]
+      if invoice.total_paid != 0
+        table_data << [
+          bold_cell(pdf, 'Total Paid:'),
+          cell(pdf, number_to_currency(invoice.total_paid, invoice), align: :right)
+        ]
+      end
+      if invoice.total_owed != 0
+        table_data << [
+          bold_cell(pdf, 'Total Owed:'),
+          cell(pdf, number_to_currency(invoice.total_owed, invoice), align: :right)
+        ]
+      end
       table = pdf.make_table(table_data, cell_style: { borders: [] })
       pdf.bounding_box([pdf.bounds.width - table.width, pdf.cursor],
                        width: table.width, height: table.height + 2) do
