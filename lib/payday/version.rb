@@ -1,5 +1,5 @@
 # This is Payday!
 module Payday
   # Current Version
-  VERSION = "3.1.5.11"
+  VERSION = "3.1.5.12"
 end
