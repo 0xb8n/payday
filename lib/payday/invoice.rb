@@ -33,32 +33,32 @@ module Payday
 
     # The tax rate that we're applying, as a BigDecimal
     def tax_rate=(value)
-      @tax_rate = BigDecimal.new(value.nil? ? 0 : value.to_s)
+      @tax_rate = BigDecimal(value.nil? ? 0 : value.to_s)
     end
 
     # Shipping rate
     def shipping_rate=(value)
-      @shipping_rate = BigDecimal.new(value.nil? ? 0 : value.to_s)
+      @shipping_rate = BigDecimal(value.nil? ? 0 : value.to_s)
     end
 
     def discount_rate=(value)
-      @discount_rate = BigDecimal.new(value.nil? ? 0 : value.to_s)
+      @discount_rate = BigDecimal(value.nil? ? 0 : value.to_s)
     end
 
     def subtotal=(value)
-      @subtotal = BigDecimal.new(value.nil? ? 0 : value.to_s)
+      @subtotal = BigDecimal(value.nil? ? 0 : value.to_s)
     end
 
     def grandtotal=(value)
-      @grandtotal = BigDecimal.new(value.nil? ? 0 : value.to_s)
+      @grandtotal = BigDecimal(value.nil? ? 0 : value.to_s)
     end
 
     def total_paid=(value)
-      @total_paid = BigDecimal.new(value.nil? ? 0 : value.to_s)
+      @total_paid = BigDecimal(value.nil? ? 0 : value.to_s)
     end
 
     def total_owed=(value)
-      @total_owed = BigDecimal.new(value.nil? ? 0 : value.to_s)
+      @total_owed = BigDecimal(value.nil? ? 0 : value.to_s)
     end
 
   end
